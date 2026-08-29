@@ -492,7 +492,7 @@ if st.session_state.results:
             ""
         )
 
-                st.markdown(
+        st.markdown(
             f"""
 <div class="name-box">
 <div class="surname">
