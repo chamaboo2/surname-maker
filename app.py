@@ -498,8 +498,8 @@ if generate_button:
             try:
 
                 results = generate_surnames(
-                    first_name.strip(),
-                    first_reading.strip(),
+                first_name.strip(),
+                first_reading.strip(),
                     mode_name
                 )
 
