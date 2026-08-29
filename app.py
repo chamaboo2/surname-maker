@@ -1,5 +1,6 @@
 import streamlit as st
 from openai import OpenAI
+from supabase import create_client
 import json
 import re
 
@@ -14,6 +15,14 @@ st.set_page_config(
     layout="centered",
 )
 
+@st.cache_resource
+def get_supabase():
+    return create_client(
+        st.secrets["SUPABASE_URL"],
+        st.secrets["SUPABASE_KEY"],
+    )
+
+supabase = get_supabase()
 
 # =========================================================
 # デザイン
