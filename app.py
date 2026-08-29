@@ -544,7 +544,7 @@ if st.session_state.results:
                 )
 
             st.success(
-                f「{surname}」をお気に入りにしました。"
+                f"「{surname}」をお気に入りにしました。"
             )
 
 
