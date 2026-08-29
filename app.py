@@ -492,36 +492,35 @@ if st.session_state.results:
             ""
         )
 
-        st.markdown(
+                st.markdown(
             f"""
-            <div class="name-box">
+<div class="name-box">
+<div class="surname">
+{surname}
+</div>
 
-                <div class="surname">
-                    {surname}
-                </div>
+<div class="reading">
+{reading}
+</div>
 
-                <div class="reading">
-                    {reading}
-                </div>
+<div class="full-name">
+{full_name}
+</div>
 
-                <div class="full-name">
-                    {full_name}
-                </div>
+<div class="score">
+おすすめ度 {score} / 100
+</div>
 
-                <div class="score">
-                    おすすめ度 {score} / 100
-                </div>
+<p>
+<b>{catchphrase}</b>
+</p>
 
-                <p>
-                    <b>{catchphrase}</b>
-                </p>
+<p>
+{reason}
+</p>
 
-                <p>
-                    {reason}
-                </p>
-
-            </div>
-            """,
+</div>
+""",
             unsafe_allow_html=True
         )
 
