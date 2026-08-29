@@ -23,7 +23,67 @@ def get_supabase():
     )
 
 supabase = get_supabase()
+def save_generated_results(first_name, first_reading, mode_name, results):
+    records = []
 
+    for item in results:
+        score = item.get("score")
+
+        try:
+            if score is not None:
+                score = int(score)
+        except (TypeError, ValueError):
+            score = None
+
+        surname = item.get("surname", "")
+        reading = item.get("reading", "")
+        full_name = item.get(
+            "full_name",
+            f"{surname} {first_name}".strip()
+        )
+
+        records.append(
+            {
+                "input_name": first_name,
+                "input_reading": first_reading or None,
+                "mode": mode_name,
+                "surname": surname,
+                "surname_reading": reading or None,
+                "full_name": full_name,
+                "score": score,
+                "catchphrase": item.get("catchphrase"),
+                "reason": item.get("reason"),
+                "is_favorite": False,
+                "is_liked": False,
+            }
+        )
+
+    if not records:
+        return results
+
+    try:
+        response = (
+            supabase
+            .table("surname_records")
+            .insert(records)
+            .execute()
+        )
+
+        saved_results = []
+
+        for index, item in enumerate(results):
+            saved_item = dict(item)
+
+            if response.data and index < len(response.data):
+                saved_item["db_id"] = response.data[index].get("id")
+
+            saved_results.append(saved_item)
+
+        return saved_results
+
+    except Exception:
+        st.warning("生成履歴をSupabaseに保存できませんでした。")
+        return results
 # =========================================================
 # デザイン
 # =========================================================
@@ -443,8 +503,15 @@ if generate_button:
                     mode_name
                 )
 
-                st.session_state.results = results
-                st.session_state.last_mode = mode_name
+                results = save_generated_results(
+    first_name.strip(),
+    first_reading.strip(),
+    mode_name,
+    results,
+)
+
+st.session_state.results = results
+st.session_state.last_mode = mode_name
 
             except Exception as e:
 
